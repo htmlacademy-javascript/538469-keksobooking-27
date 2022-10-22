@@ -1,39 +1,3 @@
-const getRandomPositiveInteger = (a, b) => {
-  if (a < 0 || b < 0) {
-    return NaN;
-  }
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-const getRandomPositiveFloat = (a, b, digits = 1) => {
-  if (a < 0 || b < 0 || digits < 0) {
-    return NaN;
-  }
-  const lower = Math.min(a, b);
-  const upper = Math.max(a, b);
-  const result = Math.random() * (upper - lower) + lower;
-  return +result.toFixed(digits);
-};
-
-const getRandomArrayElement = (element) => element[getRandomPositiveInteger(0, element.length - 1)];
-
-const getArray = (stringArray) => {
-  const array = [];
-
-  for(let i = 0; i < getRandomPositiveInteger(1, stringArray.length); i++) {
-    const index = getRandomPositiveInteger(0, stringArray.length - 1);
-    const element = stringArray[index];
-
-    if (!array.includes(element)) {
-      array.push(element);
-    }
-  }
-  return array;
-};
-
 const SIMILAR_ADS_COUNT = 10;
 
 const TITLE_ADS = [
@@ -90,6 +54,42 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
+const getRandomPositiveInteger = (a, b) => {
+  if (a < 0 || b < 0) {
+    return NaN;
+  }
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
+
+const getRandomPositiveFloat = (a, b, digits = 1) => {
+  if (a < 0 || b < 0 || digits < 0) {
+    return NaN;
+  }
+  const lower = Math.min(a, b);
+  const upper = Math.max(a, b);
+  const result = Math.random() * (upper - lower) + lower;
+  return +result.toFixed(digits);
+};
+
+const getRandomArrayElement = (element) => element[getRandomPositiveInteger(0, element.length - 1)];
+
+const getArray = (stringArray) => {
+  const array = [];
+
+  for(let i = 0; i < getRandomPositiveInteger(1, stringArray.length); i++) {
+    const index = getRandomPositiveInteger(0, stringArray.length - 1);
+    const element = stringArray[index];
+
+    if (!array.includes(element)) {
+      array.push(element);
+    }
+  }
+  return array;
+};
+
 const createAds = () => {
   const latitude = getRandomPositiveFloat(LATITUDE_MIN, LATITUDE_MAX, 5);
   const longitude = getRandomPositiveFloat(LONGITUDE_MIN, LONGITUDE_MAX, 5);
@@ -118,7 +118,7 @@ const createAds = () => {
   };
 };
 
-const similarAds = Array.from({length: SIMILAR_ADS_COUNT}, createAds);
+const createSimilarAds = () => Array.from({length: SIMILAR_ADS_COUNT}, createAds);
 
 // eslint-disable-next-line no-console
-console.log(similarAds);
+console.log(createSimilarAds());
