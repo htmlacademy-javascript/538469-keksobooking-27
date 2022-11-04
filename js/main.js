@@ -1,4 +1,4 @@
 import {createSimilarAds} from './data.js';
+import {renderAds} from './ads.js';
 
-// eslint-disable-next-line no-console
-console.log(createSimilarAds());
+renderAds(createSimilarAds());
