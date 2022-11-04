@@ -1,4 +1,9 @@
 import {createSimilarAds} from './data.js';
-import {renderAds} from './ads.js';
+import {renderAd} from './ads.js';
 
-renderAds(createSimilarAds());
+const map = document.querySelector('.map__canvas');
+
+const ads = createSimilarAds();
+const ad = renderAd(ads[0]);
+
+map.appendChild(ad);
