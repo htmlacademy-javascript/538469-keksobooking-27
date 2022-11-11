@@ -1,6 +1,6 @@
 import {createSimilarAds} from './data.js';
 import {renderAd} from './ads.js';
-import {blockForm, unblockForm} from './form.js';
+import {blockForm, unblockForm, initValidation} from './form.js';
 
 const map = document.querySelector('.map__canvas');
 
@@ -11,3 +11,4 @@ map.appendChild(ad);
 
 blockForm();
 unblockForm();
+initValidation();
