@@ -34,7 +34,7 @@ const renderPhotosList = (cardElement, data) => {
   });
 };
 
-const renderAd = ({ author, offer }) => {
+const renderAd = ({ author, offer, location }) => {
   const cardElement = cardTemplate.cloneNode(true);
   const span = cardElement.querySelector('.popup__text--price span').cloneNode(true);
 
