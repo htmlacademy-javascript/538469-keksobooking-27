@@ -62,15 +62,15 @@ noUiSlider.create(sliderElement, {
   connect: 'lower',
   format: {
     from: function(value) {
-      return parseInt(value);
+      return parseInt(value, 10);
     },
     to: function(value) {
-      return parseInt(value);
+      return parseInt(value, 10);
     }
   }
 });
 
-sliderElement.noUiSlider.on('update', (...rest) => {
+sliderElement.noUiSlider.on('update', () => {
   priceElement.value = sliderElement.noUiSlider.get();
 });
 
