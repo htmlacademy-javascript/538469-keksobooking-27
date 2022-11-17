@@ -6,6 +6,7 @@ const apartmentTypeElement = adForm.querySelector('#type');
 const priceElement = adForm.querySelector('#price');
 const timeContainer = adForm.querySelector('.ad-form__element--time');
 const timeElements = timeContainer.querySelectorAll('select');
+const sliderElement = document.querySelector('.ad-form__slider');
 
 const roomsToGuests = {
   1: ['1'],
@@ -51,6 +52,28 @@ const unblockForm = () => {
   toggleElementsState(mapFilters.children, false);
 };
 
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 1000,
+  step: 1,
+  connect: 'lower',
+  format: {
+    from: function(value) {
+      return parseInt(value, 10);
+    },
+    to: function(value) {
+      return parseInt(value, 10);
+    }
+  }
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  priceElement.value = sliderElement.noUiSlider.get();
+});
+
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
   errorClass: 'ad-form__element--invalid',
@@ -59,6 +82,7 @@ const pristine = new Pristine(adForm, {
 }, true);
 
 const validateRoomNumber = () => roomsToGuests[roomNumberElement.value].includes(capacityElement.value);
+const validatePrice = () => Number(priceElement.value) >= housingTypeToMinPrice[apartmentTypeElement.value];
 
 const getRoomNumberErrorMessage = () => `Для указанного количества гостей требуется ${guestToRooms[capacityElement.value].join(' или ')} комнаты`;
 const getCapacityErrorMessage = () => `Указанное количество комнат вмещает ${roomsToGuests[roomNumberElement.value].join(' или ')} гостей`;
@@ -76,6 +100,12 @@ const onTimeChange = (evt) => {
 
 const onApartmentTypeChange = (evt) => {
   const minPrice = housingTypeToMinPrice[evt.target.value];
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: minPrice,
+      max: 100000,
+    },
+  });
   priceElement.placeholder = minPrice;
   priceElement.min = minPrice;
   priceElement.dataset.pristineMinMessage = `Минимальное значение — ${minPrice}`;
@@ -95,11 +125,6 @@ const onFormSubmit = (evt) => {
   }
 };
 
-const validatePrice = () => {
-  priceElement.min = housingTypeToMinPrice[apartmentTypeElement.value];
-  return +priceElement.value >= +priceElement.min;
-};
-
 const initValidation = () => {
   pristine.addValidator(roomNumberElement, validateRoomNumber, getRoomNumberErrorMessage);
   pristine.addValidator(capacityElement, validateRoomNumber, getCapacityErrorMessage);
@@ -108,7 +133,7 @@ const initValidation = () => {
   capacityElement.addEventListener('change', onCapacityChange);
   roomNumberElement.addEventListener('change', onCapacityChange);
   apartmentTypeElement.addEventListener('change', onApartmentTypeChange);
-  priceElement.addEventListener('change', onCapacityChange);
+  priceElement.addEventListener('change', onApartmentTypeChange);
   timeContainer.addEventListener('change', onTimeChange);
   adForm.addEventListener('submit', onFormSubmit);
 };

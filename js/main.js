@@ -1,14 +1,15 @@
 import {createSimilarAds} from './data.js';
-import {renderAd} from './ads.js';
-import {blockForm, unblockForm, initValidation} from './form.js';
+import {blockForm, initValidation} from './form.js';
+import {initMap, createAdsMarkers} from './map.js';
 
-const map = document.querySelector('.map__canvas');
+const adsList = createSimilarAds();
 
-const ads = createSimilarAds();
-const ad = renderAd(ads[0]);
-
-map.appendChild(ad);
+const START_COORDINATES = {
+  lat: 35.68233,
+  lng: 139.75421,
+};
 
 blockForm();
-unblockForm();
 initValidation();
+initMap(START_COORDINATES);
+createAdsMarkers(adsList);
