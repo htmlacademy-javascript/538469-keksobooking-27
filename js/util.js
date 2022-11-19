@@ -32,7 +32,7 @@ const showMessageSuccess = () => {
   window.addEventListener('keydown', (evt) => {
     if(evt.key === 'Escape') {
       message.remove();
-    };
+    }
   });
 
   message.addEventListener('click', () => {
@@ -48,7 +48,7 @@ const showMessageError = () => {
   window.addEventListener('keydown', (evt) => {
     if(evt.key === 'Escape') {
       message.remove();
-    };
+    }
   });
 
   message.querySelector('.error__button').addEventListener('click', () => {
