@@ -1,3 +1,7 @@
+import {sendData} from './api.js';
+import {showMessageSuccess, showMessageError} from './util.js';
+import {setDefaultLocationMainPin, closeAllPopup} from './map.js';
+
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const roomNumberElement = document.querySelector('#room_number');
@@ -7,6 +11,7 @@ const priceElement = adForm.querySelector('#price');
 const timeContainer = adForm.querySelector('.ad-form__element--time');
 const timeElements = timeContainer.querySelectorAll('select');
 const sliderElement = document.querySelector('.ad-form__slider');
+const submitButton = adForm.querySelector('.ad-form__submit');
 
 const roomsToGuests = {
   1: ['1'],
@@ -46,9 +51,11 @@ const blockForm = () => {
 
 const unblockForm = () => {
   adForm.classList.remove('ad-form--disabled');
-  mapFilters.classList.remove('ad-form--disabled');
-
   toggleElementsState(adForm.children, false);
+};
+
+const unblockFilters = () => {
+  mapFilters.classList.remove('ad-form--disabled');
   toggleElementsState(mapFilters.children, false);
 };
 
@@ -112,6 +119,16 @@ const onApartmentTypeChange = (evt) => {
   pristine.validate(priceElement);
 };
 
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Сохраняю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
 const onFormSubmit = (evt) => {
   evt.preventDefault();
 
@@ -119,6 +136,23 @@ const onFormSubmit = (evt) => {
   if (isValid) {
     // eslint-disable-next-line no-console
     console.log('Можно отправлять');
+    blockSubmitButton();
+    const formData = new FormData(evt.target);
+    sendData(
+      () => {
+        unblockSubmitButton();
+        adForm.reset();
+        mapFilters.reset();
+        setDefaultLocationMainPin();
+        closeAllPopup();
+        showMessageSuccess();
+      },
+      () => {
+        showMessageError();
+        unblockSubmitButton();
+      },
+      formData
+    );
   } else {
     // eslint-disable-next-line no-console
     console.log('Форма невалидна');
@@ -138,4 +172,4 @@ const initValidation = () => {
   adForm.addEventListener('submit', onFormSubmit);
 };
 
-export {blockForm, unblockForm, initValidation};
+export {blockForm, unblockForm, unblockFilters, initValidation};

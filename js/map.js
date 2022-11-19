@@ -5,6 +5,15 @@ const addressField = document.querySelector('#address');
 
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
+const tile = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+const StartCoordinates = {
+  LAT: 35.68233,
+  LNG: 139.75421
+};
+
+const START_ZOOM = 13;
 
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -46,23 +55,22 @@ const createAdMarker = (point) => {
     .bindPopup(renderAd(point));
 };
 
-const initMap = (coordinates) => {
-  map.setView(coordinates, 13);
-  map.on('load', unblockForm());
+const setDefaultLocationMainPin = () => {
+  mainPinMarker.setLatLng([StartCoordinates.LAT, StartCoordinates.LNG]);
+};
 
-  L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-  ).addTo(map);
+const initMap = () => {
+  map.on('load', unblockForm);
+  map.setView([StartCoordinates.LAT, StartCoordinates.LNG], START_ZOOM);
 
-  mainPinMarker.setLatLng(coordinates);
+  L.tileLayer(tile, attribution).addTo(map);
+
+  setDefaultLocationMainPin();
   mainPinMarker.addTo(map);
 
-  mainPinMarker.on('moveend', (evt) => {
-    const location = evt.target.getLatLng();
-    addressField.value = `${location.lat.toFixed(5)}, ${location.lng.toFixed(5)}`;
+  mainPinMarker.on('move', (evt) => {
+    const { lat, lng} = evt.target.getLatLng();
+    addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
   });
 };
 
@@ -72,4 +80,8 @@ const createAdsMarkers = (adsList) => {
   });
 };
 
-export {initMap, createAdsMarkers};
+const closeAllPopup = () => {
+  map.closePopup();
+};
+
+export {initMap, createAdsMarkers, setDefaultLocationMainPin, closeAllPopup};

@@ -1,3 +1,6 @@
+const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+
 const getRandomPositiveInteger = (a, b) => {
   if (a < 0 || b < 0) {
     return NaN;
@@ -20,8 +23,47 @@ const getRandomPositiveFloat = (a, b, digits = 1) => {
 
 const getRandomArrayElement = (element) => element[getRandomPositiveInteger(0, element.length - 1)];
 
+
+const showMessageSuccess = (evt) => {
+  const message = successMessageTemplate.cloneNode(true);
+
+  document.body.append(message);
+
+  window.addEventListener('keydown', (evt) => {
+    if(evt.key === 'Escape') {
+      message.remove();
+    };
+  });
+
+  message.addEventListener('click', () => {
+    message.remove();
+  });
+};
+
+const showMessageError = (evt) => {
+  const message = errorMessageTemplate.cloneNode(true);
+
+  document.body.append(message);
+
+  window.addEventListener('keydown', (evt) => {
+    if(evt.key === 'Escape') {
+      message.remove();
+    };
+  });
+
+  message.querySelector('.error__button').addEventListener('click', () => {
+    message.remove();
+  });
+
+  message.addEventListener('click', () => {
+    message.remove();
+  });
+};
+
 export {
   getRandomPositiveInteger,
   getRandomPositiveFloat,
   getRandomArrayElement,
+  showMessageSuccess,
+  showMessageError,
 };
