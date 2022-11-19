@@ -24,7 +24,7 @@ const getRandomPositiveFloat = (a, b, digits = 1) => {
 const getRandomArrayElement = (element) => element[getRandomPositiveInteger(0, element.length - 1)];
 
 
-const showMessageSuccess = (evt) => {
+const showMessageSuccess = () => {
   const message = successMessageTemplate.cloneNode(true);
 
   document.body.append(message);
@@ -40,7 +40,7 @@ const showMessageSuccess = (evt) => {
   });
 };
 
-const showMessageError = (evt) => {
+const showMessageError = () => {
   const message = errorMessageTemplate.cloneNode(true);
 
   document.body.append(message);
