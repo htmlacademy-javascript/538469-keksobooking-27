@@ -46,20 +46,26 @@ const renderAd = ({ author, offer }) => {
   cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
   cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
 
-  if (offer.features.length) {
-    renderFeaturesList(cardElement, offer.features);
+  if ('features' in offer) {
+    if (offer.features.length) {
+      renderFeaturesList(cardElement, offer.features);
+    }
   } else {
     cardElement.querySelector('.popup__features').classList.add('hidden');
   }
 
-  if (offer.description) {
-    cardElement.querySelector('.popup__description').textContent = offer.description;
+  if('description' in offer) {
+    if (offer.description) {
+      cardElement.querySelector('.popup__description').textContent = offer.description;
+    }
   } else {
     cardElement.querySelector('.popup__description').classList.add('hidden');
   }
 
-  if (offer.photos.length) {
-    renderPhotosList(cardElement, offer.photos);
+  if('photos' in offer) {
+    if (offer.photos.length) {
+      renderPhotosList(cardElement, offer.photos);
+    }
   } else {
     cardElement.querySelector('.popup__photos').classList.add('hidden');
   }
