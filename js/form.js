@@ -1,5 +1,5 @@
 import {sendData} from './api.js';
-import {showMessageSuccess, showMessageError} from './util.js';
+import {showMessageSuccess, showMessageError} from './popup.js';
 import {setDefaultLocationMainPin, closeAllPopup} from './map.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -129,22 +129,24 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
+const resetPage = () => {
+  adForm.reset();
+  mapFilters.reset();
+  setDefaultLocationMainPin();
+  closeAllPopup();
+};
+
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-
   const isValid = pristine.validate();
+
   if (isValid) {
-    // eslint-disable-next-line no-console
-    console.log('Можно отправлять');
     blockSubmitButton();
     const formData = new FormData(evt.target);
     sendData(
       () => {
         unblockSubmitButton();
-        adForm.reset();
-        mapFilters.reset();
-        setDefaultLocationMainPin();
-        closeAllPopup();
+        resetPage();
         showMessageSuccess();
       },
       () => {
@@ -153,9 +155,6 @@ const onFormSubmit = (evt) => {
       },
       formData
     );
-  } else {
-    // eslint-disable-next-line no-console
-    console.log('Форма невалидна');
   }
 };
 

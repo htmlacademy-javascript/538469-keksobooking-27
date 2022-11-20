@@ -59,8 +59,11 @@ const setDefaultLocationMainPin = () => {
   mainPinMarker.setLatLng([StartCoordinates.LAT, StartCoordinates.LNG]);
 };
 
-const initMap = () => {
-  map.on('load', unblockForm);
+const initMap = (cb) => {
+  map.on('load', () => {
+    unblockForm();
+    cb();
+  });
   map.setView([StartCoordinates.LAT, StartCoordinates.LNG], START_ZOOM);
 
   L.tileLayer(tile, attribution).addTo(map);

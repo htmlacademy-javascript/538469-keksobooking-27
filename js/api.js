@@ -1,10 +1,9 @@
-const getData = (onSuccess, onFail, unblockFilters) => {
-  fetch('https://27.javascript.pages.academy/keksobooking/data')
+const API_URL = 'https://27.javascript.pages.academy/keksobooking';
+
+const getData = (onSuccess, onFail) => {
+  fetch(`${API_URL}/data`)
     .then((response) => response.json())
-    .then((ads) => {
-      onSuccess(ads);
-      unblockFilters();
-    })
+    .then((ads) => onSuccess(ads))
     .catch(() => {
       onFail('При загрузке данных с сервера произошла ошибка');
     });
@@ -12,7 +11,7 @@ const getData = (onSuccess, onFail, unblockFilters) => {
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://27.javascript.pages.academy/keksobooking',
+    API_URL,
     {
       method: 'POST',
       body,
