@@ -20,6 +20,10 @@ const StartCoordinates = {
 
 const START_ZOOM = 13;
 
+const setMapDefaultCoordinates = () => {
+  map.setView([StartCoordinates.LAT, StartCoordinates.LNG], START_ZOOM);
+};
+
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
@@ -69,7 +73,7 @@ const initMap = (cb) => {
     unblockForm();
     cb();
   });
-  map.setView([StartCoordinates.LAT, StartCoordinates.LNG], START_ZOOM);
+  setMapDefaultCoordinates();
 
   L.tileLayer(tile, attribution).addTo(map);
 
@@ -77,13 +81,12 @@ const initMap = (cb) => {
   mainPinMarker.addTo(map);
 
   mainPinMarker.on('move', (evt) => {
-    const { lat, lng} = evt.target.getLatLng();
+    const {lat, lng} = evt.target.getLatLng();
     addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
   });
 };
 
 const createAdsMarkers = (adsList) => {
-  markerGroup.clearLayers();
   adsList
     .slice(0, numberAdsShown)
     .forEach((ad) => {
@@ -95,4 +98,11 @@ const closeAllPopup = () => {
   map.closePopup();
 };
 
-export {initMap, createAdsMarkers, setDefaultLocationMainPin, closeAllPopup, clearMarkerGroup};
+export {
+  initMap,
+  createAdsMarkers,
+  setDefaultLocationMainPin,
+  closeAllPopup,
+  clearMarkerGroup,
+  setMapDefaultCoordinates
+};

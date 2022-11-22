@@ -1,6 +1,6 @@
 import {sendData} from './api.js';
 import {showMessageSuccess, showMessageError} from './popup.js';
-import {setDefaultLocationMainPin, closeAllPopup} from './map.js';
+import {setDefaultLocationMainPin, closeAllPopup, setMapDefaultCoordinates, clearMarkerGroup} from './map.js';
 
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
@@ -69,10 +69,10 @@ noUiSlider.create(sliderElement, {
   step: 1,
   connect: 'lower',
   format: {
-    from: function(value) {
+    from: function (value) {
       return parseInt(value, 10);
     },
-    to: function(value) {
+    to: function (value) {
       return parseInt(value, 10);
     }
   }
@@ -131,11 +131,15 @@ const unblockSubmitButton = () => {
 };
 
 const resetPage = () => {
+  clearMarkerGroup();
   adForm.reset();
   mapFilters.reset();
+  priceElement.placeholder = housingTypeToMinPrice[apartmentTypeElement.value];
   sliderElement.noUiSlider.set(0);
   setDefaultLocationMainPin();
+  pristine.reset();
   closeAllPopup();
+  setMapDefaultCoordinates();
 };
 
 resetButton.addEventListener('click', resetPage);
@@ -175,4 +179,4 @@ const initValidation = () => {
   adForm.addEventListener('submit', onFormSubmit);
 };
 
-export {blockForm, unblockForm, unblockFilters, initValidation};
+export {blockForm, unblockForm, unblockFilters, initValidation, resetPage};
