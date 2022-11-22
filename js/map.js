@@ -2,11 +2,16 @@ import {unblockForm} from './form.js';
 import {renderAd} from './ads.js';
 
 const addressField = document.querySelector('#address');
+const numberAdsShown = 10;
 
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
 const tile = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+const clearMarkerGroup = () => {
+  markerGroup.clearLayers();
+};
 
 const StartCoordinates = {
   LAT: 35.68233,
@@ -78,13 +83,16 @@ const initMap = (cb) => {
 };
 
 const createAdsMarkers = (adsList) => {
-  adsList.forEach((ad) => {
-    createAdMarker(ad);
-  });
+  markerGroup.clearLayers();
+  adsList
+    .slice(0, numberAdsShown)
+    .forEach((ad) => {
+      createAdMarker(ad);
+    });
 };
 
 const closeAllPopup = () => {
   map.closePopup();
 };
 
-export {initMap, createAdsMarkers, setDefaultLocationMainPin, closeAllPopup};
+export {initMap, createAdsMarkers, setDefaultLocationMainPin, closeAllPopup, clearMarkerGroup};
