@@ -1,4 +1,4 @@
-import {debounce, throttle} from './utils.js';
+import {debounce} from './utils.js';
 
 const OFFERS_COUNT = 10;
 const Price = {

@@ -1,6 +1,6 @@
 import {sendData} from './api.js';
 import {showMessageSuccess, showMessageError} from './popup.js';
-import {setDefaultLocationMainPin, closeAllPopup, clearMarkerGroup} from './map.js';
+import {setDefaultLocationMainPin, closeAllPopup} from './map.js';
 
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
