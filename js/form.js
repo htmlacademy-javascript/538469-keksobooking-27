@@ -131,6 +131,10 @@ const onApartmentTypeChange = (evt) => {
   pristine.validate(priceElement);
 };
 
+const onPriceChange = () => {
+  pristine.validate(priceElement);
+};
+
 const blockSubmitButton = () => {
   submitButton.disabled = true;
   submitButton.textContent = 'Сохраняю...';
@@ -145,6 +149,7 @@ const resetPage = () => {
   clearMarkerGroup();
   adForm.reset();
   mapFilters.reset();
+  priceElement.value = housingTypeToMinPrice[apartmentTypeElement.value];
   priceElement.placeholder = housingTypeToMinPrice[apartmentTypeElement.value];
   sliderElement.noUiSlider.set(0);
   setDefaultLocationMainPin();
@@ -152,7 +157,9 @@ const resetPage = () => {
   closeAllPopup();
   setMapDefaultCoordinates();
   previewYourPhoto.src = defaultPathYourPhoto;
-  previewPhotoApartment.removeChild(previewPhotoApartment.firstChild);
+  if (previewPhotoApartment.firstChild) {
+    previewPhotoApartment.removeChild(previewPhotoApartment.firstChild);
+  }
 };
 
 resetButton.addEventListener('click', resetPage);
@@ -218,7 +225,7 @@ const initValidation = () => {
   capacityElement.addEventListener('change', onCapacityChange);
   roomNumberElement.addEventListener('change', onCapacityChange);
   apartmentTypeElement.addEventListener('change', onApartmentTypeChange);
-  priceElement.addEventListener('change', onApartmentTypeChange);
+  priceElement.addEventListener('change', onPriceChange);
   timeContainer.addEventListener('change', onTimeChange);
   adForm.addEventListener('submit', onFormSubmit);
 };
