@@ -2,6 +2,10 @@ import {sendData} from './api.js';
 import {showMessageSuccess, showMessageError} from './popup.js';
 import {setDefaultLocationMainPin, closeAllPopup, setMapDefaultCoordinates, clearMarkerGroup} from './map.js';
 
+const MAX_RANGE_SLIDER = 100000;
+const START_SLIDER = 1000;
+const STEP_SLIDER = 1;
+
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const roomNumberElement = document.querySelector('#room_number');
@@ -13,6 +17,13 @@ const timeElements = timeContainer.querySelectorAll('select');
 const sliderElement = document.querySelector('.ad-form__slider');
 const submitButton = adForm.querySelector('.ad-form__submit');
 const resetButton = adForm.querySelector('.ad-form__reset');
+const uploadYourPhoto = adForm.querySelector('.ad-form-header__input');
+const previewYourPhoto = adForm.querySelector('.ad-form-header__preview img');
+const uploadPhotoApartment = adForm.querySelector('.ad-form__input');
+const previewPhotoApartment = adForm.querySelector('.ad-form__photo');
+const defaultPathYourPhoto = 'img/muffin-grey.svg';
+
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const roomsToGuests = {
   1: ['1'],
@@ -63,10 +74,10 @@ const unblockFilters = () => {
 noUiSlider.create(sliderElement, {
   range: {
     min: 0,
-    max: 100000,
+    max: MAX_RANGE_SLIDER,
   },
-  start: 1000,
-  step: 1,
+  start: START_SLIDER,
+  step: STEP_SLIDER,
   connect: 'lower',
   format: {
     from: function (value) {
@@ -111,7 +122,7 @@ const onApartmentTypeChange = (evt) => {
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: minPrice,
-      max: 100000,
+      max: MAX_RANGE_SLIDER,
     },
   });
   priceElement.placeholder = minPrice;
@@ -140,6 +151,8 @@ const resetPage = () => {
   pristine.reset();
   closeAllPopup();
   setMapDefaultCoordinates();
+  previewYourPhoto.src = defaultPathYourPhoto;
+  previewPhotoApartment.removeChild(previewPhotoApartment.firstChild);
 };
 
 resetButton.addEventListener('click', resetPage);
@@ -165,6 +178,37 @@ const onFormSubmit = (evt) => {
     );
   }
 };
+
+uploadYourPhoto.addEventListener('change', () => {
+  const file = uploadYourPhoto.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    previewYourPhoto.src = URL.createObjectURL(file);
+  }
+});
+
+uploadPhotoApartment.addEventListener('change', () => {
+  const file = uploadPhotoApartment.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    img.style.maxWidth = '100%';
+    img.style.height = 'auto';
+    previewPhotoApartment.style.display = 'flex';
+    previewPhotoApartment.style.alignItems = 'center';
+    if (previewPhotoApartment.firstChild) {
+      previewPhotoApartment.removeChild(previewPhotoApartment.firstChild);
+    }
+    previewPhotoApartment.insertAdjacentElement('afterbegin', img);
+  }
+});
 
 const initValidation = () => {
   pristine.addValidator(roomNumberElement, validateRoomNumber, getRoomNumberErrorMessage);

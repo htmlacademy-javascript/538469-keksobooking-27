@@ -12,7 +12,6 @@ initMap(() => {
     unblockFilters();
     createAdsMarkers(ads);
     setFilterListener(ads);
-  });
-}, showMessageError);
-
+  }, () => showMessageError());
+});
 
