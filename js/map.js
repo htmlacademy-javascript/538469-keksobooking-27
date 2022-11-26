@@ -24,16 +24,19 @@ const setMapDefaultCoordinates = () => {
   map.setView([StartCoordinates.LAT, StartCoordinates.LNG], START_ZOOM);
 };
 
+const MAIN_ICON_SIZE = 52;
+const REGULAR_ICON_SIZE = 40;
+
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
+  iconSize: [MAIN_ICON_SIZE, MAIN_ICON_SIZE],
+  iconAnchor: [MAIN_ICON_SIZE / 2, MAIN_ICON_SIZE],
 });
 
 const regularIcon = L.icon({
   iconUrl: './img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: [REGULAR_ICON_SIZE, REGULAR_ICON_SIZE],
+  iconAnchor: [REGULAR_ICON_SIZE / 2, REGULAR_ICON_SIZE],
 });
 
 const mainPinMarker = L.marker(

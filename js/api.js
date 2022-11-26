@@ -5,7 +5,7 @@ const getData = (onSuccess, onFail) => {
     .then((response) => response.json())
     .then((ads) => onSuccess(ads))
     .catch(() => {
-      onFail('При загрузке данных с сервера произошла ошибка');
+      onFail('Не удалось отправить форму. Попробуйте ещё раз');
     });
 };
 
